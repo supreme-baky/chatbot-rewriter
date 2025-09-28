@@ -35,10 +35,12 @@ if submit:
         with st.spinner("Processing — generating revision..."):
             try:
                 out = chatbot(user_input)
-                st.markdown("**Revised Version:**")
-                # render multi-paragraph preserved text
-                for para in out.split("\n\n")[1:]:  # skip first label line if present
-                    st.write(para.strip())
+                if out.startswith("Revised Version:"):
+                    st.markdown("**Revised Version:**")
+                    st.write(out.replace("Revised Version:", "").strip())
+                else:
+                    st.markdown("**Answer:**")
+                    st.write(out.strip())
             except Exception as e:
                 st.error(f"Error during generation: {e}")
 
